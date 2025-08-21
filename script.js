@@ -62,42 +62,46 @@ function tick() {
 
         if (code) {
             const qrData = code.data.trim();
-            if (foundQRs.hasOwnProperty(qrData) && !foundQRs[qrData]) {
-                // 未発見のQRコードだった場合
-                foundQRs[qrData] = true;
-                foundCount++;
-                
-                // テロップを表示
-                messageElement.textContent = `ヒントが解放されました`;
-                // 3秒後にメッセージをクリア
-                setTimeout(() => {
-                    messageElement.textContent = '';
-                }, 3000); 
-
-                foundCountElement.textContent = foundCount;
-
-                // QRコードに対応する画像に更新
-                if (qrImages[qrData]) {
-                  puzzleImage.src = qrImages[qrData];
-                }
-
-                if (foundCount === totalQRs) {
-                    // すべてのQRコードを発見したらQRスキャンを停止し、次の画面へ
-                    if (videoElement.srcObject) {
-                        const tracks = videoElement.srcObject.getTracks();
-                        tracks.forEach(track => track.stop());
-                        videoElement.srcObject = null;
-                        videoElement.style.display = 'none'; // ビデオ要素を非表示に
-                    }
+            if (foundQRs.hasOwnProperty(qrData)) {
+                if (!foundQRs[qrData]) {
+                    // 未発見のQRコードだった場合
+                    foundQRs[qrData] = true;
+                    foundCount++;
                     
-                    puzzleImage.src = './nazo3.jpeg'; // nazo3.jpegを表示
-                    foundCountElement.style.display = 'none'; // QR進捗を非表示に
-                    finalMessageText.style.display = 'block'; // 最終メッセージを表示
+                    // 「ヒントが解放されました」と表示
+                    messageElement.textContent = `ヒントが解放されました`;
+                    // 3秒後にメッセージをクリア
+                    setTimeout(() => {
+                        messageElement.textContent = '';
+                    }, 3000); 
+
+                    foundCountElement.textContent = foundCount;
+
+                    // QRコードに対応する画像に更新
+                    if (qrImages[qrData]) {
+                      puzzleImage.src = qrImages[qrData];
+                    }
+
+                    if (foundCount === totalQRs) {
+                        // すべてのQRコードを発見したらQRスキャンを停止し、次の画面へ
+                        if (videoElement.srcObject) {
+                            const tracks = videoElement.srcObject.getTracks();
+                            tracks.forEach(track => track.stop());
+                            videoElement.srcObject = null;
+                            videoElement.style.display = 'none'; // ビデオ要素を非表示に
+                        }
+                        
+                        puzzleImage.src = './nazo3.jpeg'; // nazo3.jpegを表示
+                        foundCountElement.style.display = 'none'; // QR進捗を非表示に
+                        finalMessageText.style.display = 'block'; // 最終メッセージを表示
+                    }
+                } else {
+                    // すでに発見済みのQRコードだった場合
+                    messageElement.textContent = "登録済みのQRコードです";
                 }
-            } else if (foundQRs.hasOwnProperty(qrData) && foundQRs[qrData]) {
-                messageElement.textContent = "その古の印は、すでに手に入れています。";
             } else {
-                messageElement.textContent = "これは古の印ではありません。";
+                // 合致しないQRコードだった場合
+                messageElement.textContent = "もう一度読み込んでください";
             }
         }
     }
