@@ -6,6 +6,8 @@ const canvasElement = document.getElementById('canvasElement');
 const messageElement = document.getElementById('message');
 const foundCountElement = document.getElementById('foundCount');
 const puzzleImage = document.getElementById('puzzleImage');
+// 最終メッセージ要素を追加
+const finalMessageText = document.getElementById('finalMessageText');
 
 
 // ゲームの状態を管理する変数
@@ -88,9 +90,9 @@ function tick() {
                         videoElement.style.display = 'none'; // ビデオ要素を非表示に
                     }
                     
-                    messageElement.textContent = '全てのヒントを手に入れたようだ。\nさあ答えを述べよ。';
                     puzzleImage.src = './nazo3.jpeg'; // nazo3.jpegを表示
                     foundCountElement.style.display = 'none'; // QR進捗を非表示に
+                    finalMessageText.style.display = 'block'; // 最終メッセージを表示
                 }
             } else if (foundQRs.hasOwnProperty(qrData) && foundQRs[qrData]) {
                 messageElement.textContent = "その古の印は、すでに手に入れています。";
