@@ -70,10 +70,10 @@ function tick() {
                     
                     // 「ヒントが解放されました」と表示
                     messageElement.textContent = `ヒントが解放されました`;
-                    // 3秒後にメッセージをクリア
-                    // setTimeout(() => {
-                    //     messageElement.textContent = '';
-                    // }, 3000); 
+                    // 4秒後にメッセージをクリア
+                    setTimeout(() => {
+                        messageElement.textContent = '';
+                    }, 4000); 
 
                     foundCountElement.textContent = foundCount;
 
