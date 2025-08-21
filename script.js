@@ -68,12 +68,19 @@ function tick() {
                     foundQRs[qrData] = true;
                     foundCount++;
                     
-                    // 「ヒントが解放されました」と表示
-                    messageElement.textContent = `ヒントが解放されました`;
+                    // 読み込んだQRコードに応じてメッセージを表示
+                    if (qrData === 'qr1') {
+                        messageElement.textContent = `ヒント①が解放されました`;
+                    } else if (qrData === 'qr2') {
+                        messageElement.textContent = `ヒント②が解放されました`;
+                    } else if (qrData === 'qr3') {
+                        messageElement.textContent = `ヒント③が解放されました`;
+                    }
+
                     // 4秒後にメッセージをクリア
-                    // setTimeout(() => {
-                    //     messageElement.textContent = '';
-                    // }, 4000); 
+                    setTimeout(() => {
+                        messageElement.textContent = '';
+                    }, 4000); 
 
                     foundCountElement.textContent = foundCount;
 
@@ -95,13 +102,7 @@ function tick() {
                         foundCountElement.style.display = 'none'; // QR進捗を非表示に
                         finalMessageText.style.display = 'block'; // 最終メッセージを表示
                     }
-                } else {
-                    // すでに発見済みのQRコードだった場合
-                    messageElement.textContent = "登録済みのQRコードです";
                 }
-            } else {
-                // 合致しないQRコードだった場合
-                messageElement.textContent = "もう一度読み込んでください";
             }
         }
     }
