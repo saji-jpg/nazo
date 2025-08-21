@@ -45,6 +45,8 @@ async function startGame() {
         const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
         videoElement.srcObject = stream;
         videoElement.play();
+        // カメラ映像を90度回転させて縦長に表示
+        videoElement.style.transform = 'rotate(90deg)';
         requestAnimationFrame(tick);
     } catch (err) {
         console.error("カメラの起動に失敗しました: ", err);
