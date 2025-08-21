@@ -23,15 +23,13 @@
 
         <!-- ゲーム画面（QRコードスキャン） -->
         <div id="gameScreen" class="screen">
-            <h2>謎を解け</h2>
-            <p>
-                教室に隠された3つのQRコードを探し、答えにたどり着け。
-            </p>
+            <div id="camera-container">
+                <video id="videoElement" autoplay playsinline></video>
+                <canvas id="canvasElement"></canvas>
+            </div>
             <!-- 謎解き画像を表示する要素を追加 -->
             <img id="puzzleImage" src="./nazo0.jpeg" alt="謎解き画像" style="max-width: 100%; height: auto; margin-bottom: 20px;">
             
-            <video id="videoElement" autoplay playsinline style="max-width: 200px;"></video>
-            <canvas id="canvasElement"></canvas>
             <div id="message"></div>
             <div id="qrStatus" class="qr-status">発見した印: <span id="foundCount">0</span>/3</div>
             <!-- すべてのQRコードを読み取った後に表示するメッセージ -->
