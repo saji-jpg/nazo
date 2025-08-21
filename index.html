@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古の書物と隠された謎</title>
+    <!-- QRコードリーダーライブラリをCDNから読み込みます -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.0.4/dist/jsQR.min.js"></script>
+    <!-- CSSファイルを読み込みます -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- トップ画面 -->
+        <div id="introScreen" class="screen">
+            <h2>怪盗サジからの挑戦状</h2>
+            <p>
+                この教室には私の秘宝が隠されている。探し当ててみるがよい。しかし利口な者にしか真実を見つけることはできないであろう。
+            </p>
+            <button onclick="startGame()">謎解きに進む</button>
+        </div>
+
+        <!-- ゲーム画面（QRコードスキャン） -->
+        <div id="gameScreen" class="screen">
+            <h2>古の印を探せ</h2>
+            <p>
+                カメラを起動しました。教室に隠された3つの古の印（QRコード）を探し、読み取ってください。
+            </p>
+            <!-- 謎解き画像を表示する要素を追加 -->
+            <img id="puzzleImage" src="./nazo0.jpeg" alt="謎解き画像" style="max-width: 100%; height: auto; margin-bottom: 20px;">
+            
+            <video id="videoElement" autoplay playsinline></video>
+            <canvas id="canvasElement"></canvas>
+            <div id="message"></div>
+            <div id="qrStatus" class="qr-status">発見した印: <span id="foundCount">0</span>/3</div>
+        </div>
+
+        <!-- 最終謎画面 -->
+        <div id="finalPuzzleScreen" class="screen">
+            <h2>最後の謎</h2>
+            <p>
+                すべての印が集まりました。最後に解くべき謎はこれです。
+            </p>
+            <p id="finalPuzzleText" style="font-size: 1.5rem; margin: 20px 0;">
+                私は口を開けば暗闇を生み出し、閉じれば光を宿す。私の秘密を解き明かし、その名前を唱えよ。さて、私は誰でしょう？
+            </p>
+            <input type="text" id="finalPuzzleInput" placeholder="答えを入力">
+            <button onclick="checkFinalAnswer()">答えを告げる</button>
+            <div id="finalMessage" style="color: #ff5722; margin-top: 10px;"></div>
+        </div>
+
+        <!-- クリア画面 -->
+        <div id="completionScreen" class="screen">
+            <h2>おめでとうございます！</h2>
+            <p>
+                すべての謎を解き明かし、この場所の真実を掴みました。
+            </p>
+            <p>
+                ご参加ありがとうございました！
+            </p>
+        </div>
+    </div>
+
+    <!-- JavaScriptファイルを読み込みます -->
+    <script src="script.js"></script>
+</body>
+</html>
