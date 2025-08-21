@@ -3,38 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文化祭 謎解きゲーム</title>
+    <title>怪盗サジからの挑戦状</title>
+    <!-- QRコードリーダーライブラリをCDNから読み込みます -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.0.4/dist/jsQR.min.js"></script>
+    <!-- CSSファイルを読み込みます -->
     <link rel="stylesheet" href="style.css">
-    <script src="https://rawcdn.githack.com/cozmo/jsQR/f44b419b7d519e99a80e4663b655519491764666/dist/jsQR.js"></script>
 </head>
 <body>
 
-<div class="container screen" id="introScreen">
-    <h1>古文書の謎</h1>
-    <p>
-        文化祭へようこそ！<br>
-        この学校に隠された古の秘宝を見つけ出すには、校内に散りばめられた3つの「古の印」を集める必要があります。<br>
-        この端末を使ってQRコードをスキャンし、謎を解き明かしてください。
-    </p>
-    <button onclick="startGame()">冒険を始める</button>
-</div>
+    <div class="container">
+        <!-- トップ画面 -->
+        <div id="introScreen" class="screen">
+            <h2>怪盗サジからの挑戦状</h2>
+            <p>
+                この教室には私の秘宝が隠されている。探し当ててみるがよい。しかし利口な者にしか真実を見つけることはできないであろう。
+            </p>
+            <button onclick="startGame()">謎解きに進む</button>
+        </div>
 
-<div class="container screen" id="gameScreen">
-    <div id="camera-container">
-        <video id="videoElement" autoplay playsinline></video>
-        <canvas id="canvasElement"></canvas>
+        <!-- ゲーム画面（QRコードスキャン） -->
+        <div id="gameScreen" class="screen">
+            <h2>謎を解け</h2>
+            <p>
+                教室に隠された3つのQRコードを探し、答えにたどり着け。
+            </p>
+            <!-- 謎解き画像を表示する要素を追加 -->
+            <img id="puzzleImage" src="./nazo0.jpeg" alt="謎解き画像" style="max-width: 100%; height: auto; margin-bottom: 20px;">
+            
+            <video id="videoElement" autoplay playsinline style="max-width: 200px;"></video>
+            <canvas id="canvasElement"></canvas>
+            <div id="message"></div>
+            <div id="qrStatus" class="qr-status">発見した印: <span id="foundCount">0</span>/3</div>
+            <!-- すべてのQRコードを読み取った後に表示するメッセージ -->
+            <div id="finalMessageText" class="final-message-text" style="display:none;">
+                <p>全てのヒントを手に入れたようだ。</p>
+                <p>さあ答えを述べよ。</p>
+            </div>
+        </div>
     </div>
-    <img id="puzzleImage" src="./nazo0.jpeg" alt="謎解き画像">
-    <p id="message"></p>
-    <div class="qr-status">
-        <p>集めた古の印: <span id="foundCount">0</span> / 3</p>
-    </div>
-    <p id="finalMessageText" style="display: none;">
-        すべての古の印が集まりました！<br>
-        最終的な謎を解き、秘宝を手に入れましょう。
-    </p>
-</div>
 
-<script src="script.js"></script>
+    <!-- JavaScriptファイルを読み込みます -->
+    <script src="script.js"></script>
 </body>
 </html>
