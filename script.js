@@ -77,10 +77,10 @@ function tick() {
                         messageElement.textContent = `ヒント③が解放されました`;
                     }
 
-                    // 4秒後にメッセージをクリア
+                    // 14秒後にメッセージをクリア
                     setTimeout(() => {
                         messageElement.textContent = '';
-                    }, 4000); 
+                    }, 14000); 
 
                     foundCountElement.textContent = foundCount;
 
@@ -108,3 +108,4 @@ function tick() {
     }
     requestAnimationFrame(tick);
 }
+
