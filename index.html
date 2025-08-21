@@ -16,7 +16,7 @@
         <div id="introScreen" class="screen">
             <h2>怪盗サジからの挑戦状</h2>
             <p>
-                この教室には私の秘宝が隠されている。探し当ててみるがよい。<br>しかし利口な者にしか真実を見つけることはできないであろう。
+                この教室には私の秘宝が隠されている。探し当ててみるがよい。しかし利口な者にしか真実を見つけることはできないであろう。
             </p>
             <button onclick="startGame()">謎解きに進む</button>
         </div>
@@ -34,31 +34,6 @@
             <canvas id="canvasElement"></canvas>
             <div id="message"></div>
             <div id="qrStatus" class="qr-status">発見した印: <span id="foundCount">0</span>/3</div>
-        </div>
-
-        <!-- 最終謎画面 -->
-        <div id="finalPuzzleScreen" class="screen">
-            <h2>最後の謎</h2>
-            <p>
-                すべての印が集まりました。最後に解くべき謎はこれです。
-            </p>
-            <p id="finalPuzzleText" style="font-size: 1.5rem; margin: 20px 0;">
-                私は口を開けば暗闇を生み出し、閉じれば光を宿す。私の秘密を解き明かし、その名前を唱えよ。さて、私は誰でしょう？
-            </p>
-            <input type="text" id="finalPuzzleInput" placeholder="答えを入力">
-            <button onclick="checkFinalAnswer()">答えを告げる</button>
-            <div id="finalMessage" style="color: #ff5722; margin-top: 10px;"></div>
-        </div>
-
-        <!-- クリア画面 -->
-        <div id="completionScreen" class="screen">
-            <h2>おめでとうございます！</h2>
-            <p>
-                すべての謎を解き明かし、この場所の真実を掴みました。
-            </p>
-            <p>
-                ご参加ありがとうございました！
-            </p>
         </div>
     </div>
 
