@@ -1,15 +1,10 @@
 // ゲームの要素を取得
 const introScreen = document.getElementById('introScreen');
 const gameScreen = document.getElementById('gameScreen');
-const finalPuzzleScreen = document.getElementById('finalPuzzleScreen');
-const completionScreen = document.getElementById('completionScreen');
 const videoElement = document.getElementById('videoElement');
 const canvasElement = document.getElementById('canvasElement');
 const messageElement = document.getElementById('message');
 const foundCountElement = document.getElementById('foundCount');
-const finalPuzzleInput = document.getElementById('finalPuzzleInput');
-const finalMessage = document.getElementById('finalMessage');
-// 画像要素を追加
 const puzzleImage = document.getElementById('puzzleImage');
 
 
@@ -96,9 +91,6 @@ function tick() {
                     messageElement.textContent = '全てのヒントを手に入れたようだ。\nさあ答えを述べよ。';
                     puzzleImage.src = './nazo3.jpeg'; // nazo3.jpegを表示
                     foundCountElement.style.display = 'none'; // QR進捗を非表示に
-                    
-                    // 最終謎画面へ遷移する代わりに、現在の画面でメッセージと画像を表示
-                    // 最終謎画面への自動遷移は削除
                 }
             } else if (foundQRs.hasOwnProperty(qrData) && foundQRs[qrData]) {
                 messageElement.textContent = "その古の印は、すでに手に入れています。";
@@ -108,20 +100,4 @@ function tick() {
         }
     }
     requestAnimationFrame(tick);
-}
-
-// 最終謎の正解判定
-function checkFinalAnswer() {
-    const answer = finalPuzzleInput.value.trim().toLowerCase();
-    const correctAnswer = 'まぶた'; // 答えは「まぶた」
-    if (answer === correctAnswer) {
-        finalMessage.textContent = "正解！あなたは真実の扉を開きました。";
-        finalMessage.style.color = '#8bc34a';
-        setTimeout(() => {
-            showScreen('completionScreen');
-        }, 1500);
-    } else {
-        finalMessage.textContent = "残念、違うようです。もう一度よく考えてみましょう。";
-        finalMessage.style.color = '#ff5722';
-    }
 }
