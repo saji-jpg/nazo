@@ -70,7 +70,10 @@ button:hover {
 #message {
     margin-top: 20px;
     font-size: 1.2rem;
-    color: #d4ac00; /* 金色に変更 */
+    color: #1a1a1a; /* 黒字に変更 */
+    background-color: #d4ac00; /* 金色に変更 */
+    padding: 10px;
+    border-radius: 5px;
     min-height: 40px;
 }
 
