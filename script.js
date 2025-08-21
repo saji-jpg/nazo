@@ -69,7 +69,14 @@ function tick() {
                 // 未発見のQRコードだった場合
                 foundQRs[qrData] = true;
                 foundCount++;
-                messageElement.textContent = `${foundCount}つ目の古の印「${qrData}」を発見しました！`;
+                
+                // テロップを表示
+                messageElement.textContent = `ヒントが解放されました`;
+                // 3秒後にメッセージをクリア
+                setTimeout(() => {
+                    messageElement.textContent = '';
+                }, 3000); 
+
                 foundCountElement.textContent = foundCount;
 
                 // QRコードに対応する画像に更新
