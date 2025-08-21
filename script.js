@@ -85,10 +85,20 @@ function tick() {
                 }
 
                 if (foundCount === totalQRs) {
-                    // すべてのQRコードを発見したら最終謎へ
-                    setTimeout(() => {
-                        showScreen('finalPuzzleScreen');
-                    }, 1500); // 1.5秒後に画面を切り替え
+                    // すべてのQRコードを発見したらQRスキャンを停止し、次の画面へ
+                    if (videoElement.srcObject) {
+                        const tracks = videoElement.srcObject.getTracks();
+                        tracks.forEach(track => track.stop());
+                        videoElement.srcObject = null;
+                        videoElement.style.display = 'none'; // ビデオ要素を非表示に
+                    }
+                    
+                    messageElement.textContent = '全てのヒントを手に入れたようだ。\nさあ答えを述べよ。';
+                    puzzleImage.src = './nazo3.jpeg'; // nazo3.jpegを表示
+                    foundCountElement.style.display = 'none'; // QR進捗を非表示に
+                    
+                    // 最終謎画面へ遷移する代わりに、現在の画面でメッセージと画像を表示
+                    // 最終謎画面への自動遷移は削除
                 }
             } else if (foundQRs.hasOwnProperty(qrData) && foundQRs[qrData]) {
                 messageElement.textContent = "その古の印は、すでに手に入れています。";
