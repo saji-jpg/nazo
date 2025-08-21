@@ -53,7 +53,7 @@ button:hover {
 
 #videoElement {
     width: 100%;
-    max-width: 400px;
+    max-width: 200px;
     height: auto;
     border: 2px solid #5d4037;
     border-radius: 5px;
