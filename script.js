@@ -57,7 +57,7 @@ function tick() {
     if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
         const canvas = canvasElement.getContext('2d');
         canvas.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-        const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+        const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasData.height);
         const code = jsQR(imageData.data, imageData.width, imageData.height);
 
         if (code) {
