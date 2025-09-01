@@ -280,7 +280,7 @@
             <img id="puzzleImage" src="./nazo0.jpeg" alt="謎解き画像" style="max-width: 100%; height: auto; margin-bottom: 20px;">
             <div id="timer"></div> <!-- ここにタイマーを移動 -->
             <div id="finalMessageText" class="final-message-text" style="display:none;">
-                <p>答えを述べよ。</p>
+                <p>さあ答えを述べよ。</p>
             </div>
         </div>
     </div>
@@ -333,8 +333,13 @@
         let timerStarted = false; // タイマーが開始されたかどうかを追跡する新しい変数
 
         // メッセージボックスを表示する関数
-        function showMessage(text) {
+        function showMessage(text, showOkButton = true) {
             messageBoxText.textContent = text;
+            if (showOkButton) {
+                okButton.style.display = 'block';
+            } else {
+                okButton.style.display = 'none';
+            }
             messageBoxOverlay.classList.add('show');
         }
 
@@ -382,7 +387,7 @@
                 
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    showMessage('時間切れだ！また挑戦しに来い');
+                    showMessage('時間切れだ！また挑戦しに来い', false); // OKボタンを非表示にする
                     // QRコードスキャンを停止
                     if (videoElement.srcObject) {
                         const tracks = videoElement.srcObject.getTracks();
@@ -490,4 +495,3 @@
     </script>
 </body>
 </html>
-
