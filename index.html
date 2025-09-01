@@ -3,18 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>怪盗サジからの挑戦状</title>
+    <title>リッチな男SAJI</title>
     <!-- QRコードリーダーライブラリをCDNから読み込みます -->
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.0.4/dist/jsQR.min.js"></script>
-    <!-- CSSファイルを読み込みます -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 全体のスタイル設定。成金、金ぴかな謎解きの雰囲気を出すためのデザインです */
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Impact', 'Arial Black', sans-serif; /* 力強いフォント */
+            color: #FFD700; /* 豪華なゴールド */
+            background: linear-gradient(135deg, #1A1A1A, #3A3A3A, #1A1A1A); /* 暗めの背景にグラデーション */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 背景にお金や金塊のパターンを追加 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://placehold.co/150x150/1A1A1A/FFD700?text=Saji'); /* 札束や金塊のパターン画像を想定 */
+            background-size: 150px;
+            opacity: 0.1; /* 透かしのように表示 */
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 90%;
+            width: 550px; /* 少し大きく */
+            padding: 2.5rem; /* パディングを増やす */
+            border: 5px solid #DAA520; /*豪華なゴールドの太枠 */
+            background-color: rgba(43, 43, 43, 0.9); /* 少し透明度を持たせる */
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5); /* 金色の強い光沢 */
+            border-radius: 15px; /* 角を丸く */
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* コンテナの角に装飾 */
+        .container::before, .container::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 3px solid #FFD700;
+            z-index: 1;
+        }
+        .container::before {
+            top: -3px; left: -3px;
+            border-right: none;
+            border-bottom: none;
+        }
+        .container::after {
+            bottom: -3px; right: -3px;
+            border-left: none;
+            border-top: none;
+        }
+
+        h1, h2 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            color: #FFD700; /* 豪華なゴールド */
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.9), 0 0 5px rgba(255, 215, 0, 0.7); /* 強烈な光沢 */
+            letter-spacing: 2px; /* 文字間隔を広げる */
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 3em; /* 非常に大きく */
+        }
+
+        h2 {
+            font-size: 2em;
+        }
+
+        p {
+            line-height: 1.8;
+            color: #F0E6D2; /* やや明るい色に */
+            margin-bottom: 1.5rem;
+        }
+
+        button {
+            background: linear-gradient(to bottom, #FFD700, #DAA520); /* ゴールドのグラデーション */
+            color: #333333; /* 暗めの文字色 */
+            border: 3px solid #FFFACD; /*明るいゴールドの縁取り */
+            padding: 12px 25px; /* パディングを増やす */
+            margin: 15px;
+            cursor: pointer;
+            font-size: 1.2rem; /* フォントサイズを大きく */
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border-radius: 8px; /* 角を丸く */
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5); /* 強めの影 */
+            text-transform: uppercase; /*大文字に */
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background: linear-gradient(to bottom, #DAA520, #FFD700); /* ホバーでグラデーション反転 */
+            transform: translateY(-3px) scale(1.05); /* 浮き上がるアニメーション */
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.7);
+            border-color: #FFFFE0;
+        }
+
+        #camera-container {
+            position: relative;
+            width: 250px; /* カメラサイズを大きく */
+            height: 250px;
+            margin: 0 auto 30px;
+            overflow: hidden;
+            border: 4px solid #DAA520; /*ゴールドの枠 */
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        }
+
+        #videoElement {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #canvasElement {
+            display: none; /* カメラ映像を処理するためのキャンバスは非表示に */
+        }
+
+        .screen {
+            display: none;
+        }
+
+        /* 最終謎の入力フィールドとボタン */
+        #finalPuzzleInput {
+            background-color: #F0E6D2;
+            border: 3px solid #DAA520;
+            padding: 10px;
+            font-size: 1.1rem;
+            color: #1A1A1A;
+            border-radius: 8px;
+            margin-top: 15px;
+            width: 70%; /* 幅を調整 */
+            text-align: center;
+            box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .final-message-text {
+            margin-top: 30px;
+            font-size: 2rem; /* さらに大きく */
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 1), 0 0 8px rgba(255, 215, 0, 0.8); /* 強い光沢 */
+            letter-spacing: 3px;
+        }
+
+        #puzzleImage {
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            border: 3px solid #DAA520; /*画像にもゴールドの枠 */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            margin-bottom: 20px;
+        }
+        
+        /* メッセージボックスのスタイル */
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .message-box-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .message-box {
+            background-color: rgba(43, 43, 43, 0.95);
+            border: 5px solid #DAA520;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+            font-size: 1.8rem;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.9);
+            animation: fadeIn 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .message-box-button {
+            background: linear-gradient(to bottom, #FFD700, #DAA520);
+            color: #333333;
+            border: 3px solid #FFFACD;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.5);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .message-box-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.7);
+        }
+
+        /* タイマー表示のスタイル */
+        #timer {
+            position: relative; /* relativeに変更して通常のフローに配置 */
+            margin-top: 20px; /* nazo画像との間に余白を追加 */
+            font-size: 2em;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.9);
+            letter-spacing: 2px;
+            background-color: rgba(43, 43, 43, 0.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px solid #DAA520;
+            display: none; /* 初期は非表示 */
+        }
+    </style>
 </head>
 <body>
-
     <div class="container">
         <!-- トップ画面 -->
         <div id="introScreen" class="screen">
-            <h2>怪盗サジからの挑戦状</h2>
+            <h1>大富豪<br>リッチな男SAJIからの挑戦状</h1>
             <p>
                 この教室には私の秘宝が隠されている。探し当ててみるがよい。しかし利口な者にしか真の秘宝を見つけることはできないであろう。
             </p>
@@ -27,22 +276,183 @@
                 <video id="videoElement" autoplay playsinline></video>
                 <canvas id="canvasElement"></canvas>
             </div>
-            <!-- 謎解き画像を表示する要素を追加 -->
+            <!--謎解き画像を表示する要素を追加 -->
             <img id="puzzleImage" src="./nazo0.jpeg" alt="謎解き画像" style="max-width: 100%; height: auto; margin-bottom: 20px;">
-            
-            <div id="message"></div>
-            <div id="qrStatus" class="qr-status">発見したQR: <span id="foundCount">0</span>/3</div>
-            <!-- すべてのQRコードを読み取った後に表示するメッセージ -->
+            <div id="timer"></div> <!-- ここにタイマーを移動 -->
             <div id="finalMessageText" class="final-message-text" style="display:none;">
                 <p>さあ答えを述べよ。</p>
             </div>
         </div>
     </div>
+    
+    <!-- メッセージボックス用のHTMLを追加 -->
+    <div id="messageBoxOverlay" class="message-box-overlay">
+        <div id="messageBox" class="message-box">
+            <span id="messageBoxText"></span>
+            <button class="message-box-button" id="okButton">OK</button>
+        </div>
+    </div>
+    
+    <script>
+        // ゲームの要素を取得
+        const introScreen = document.getElementById('introScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const videoElement = document.getElementById('videoElement');
+        const canvasElement = document.getElementById('canvasElement');
+        const puzzleImage = document.getElementById('puzzleImage');
+        // 最終メッセージ要素を追加
+        const finalMessageText = document.getElementById('finalMessageText');
+        // メッセージボックスの要素を取得
+        const messageBoxOverlay = document.getElementById('messageBoxOverlay');
+        const messageBoxText = document.getElementById('messageBoxText');
+        const okButton = document.getElementById('okButton');
+        // タイマー要素を取得
+        const timerElement = document.getElementById('timer');
+        
+        // ゲームの状態を管理する変数
+        let foundQRs = {
+            'qr1': false,
+            'qr2': false,
+            'qr3': false
+        };
+        const totalQRs = Object.keys(foundQRs).length;
+        let foundCount = 0;
+        
+        // QRコードと対応する画像パス
+        const qrImages = {
+            'qr1': './nazo1.jpeg',
+            'qr2': './nazo2.jpeg',
+            'qr3': './nazo3.jpeg'
+        };
 
-    <!-- JavaScriptファイルを読み込みます -->
-    <script src="script.js"></script>
+        let timerInterval;
+        const totalTimeInSeconds = 3 * 60;
+        let timeLeft = totalTimeInSeconds;
+        let startTime; // 新しい変数: タイマー開始時刻
+
+        // メッセージボックスを表示する関数
+        function showMessage(text) {
+            messageBoxText.textContent = text;
+            messageBoxOverlay.classList.add('show');
+        }
+
+        // メッセージボックスを非表示にするイベントリスナー
+        okButton.addEventListener('click', () => {
+            messageBoxOverlay.classList.remove('show');
+            // ゲーム開始時のみタイマーを起動
+            startTimer();
+        });
+        
+        // 初期画面表示
+        showScreen('introScreen');
+        
+        // 画面切り替え関数
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.style.display = 'none';
+            });
+            document.getElementById(screenId).style.display = 'block';
+        }
+
+        // タイマーを開始する関数
+        function startTimer() {
+            timerElement.style.display = 'block';
+            startTime = Date.now(); // タイマー開始時刻を記録
+            
+            // `setInterval`の代わりに`requestAnimationFrame`を使用
+            function updateTimer() {
+                const elapsedTime = Date.now() - startTime;
+                timeLeft = Math.max(0, totalTimeInSeconds - Math.floor(elapsedTime / 1000));
+
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showMessage('時間切れだ！また挑戦しに来い');
+                    // QRコードスキャンを停止
+                    if (videoElement.srcObject) {
+                        const tracks = videoElement.srcObject.getTracks();
+                        tracks.forEach(track => track.stop());
+                        videoElement.srcObject = null;
+                        videoElement.style.display = 'none';
+                    }
+                } else {
+                    requestAnimationFrame(updateTimer);
+                }
+            }
+            requestAnimationFrame(updateTimer);
+        }
+        
+        // ゲーム開始
+        async function startGame() {
+            showScreen('gameScreen');
+            try {
+                // ゲーム開始時にメッセージを表示
+                showMessage('3分以内に3つのQRコードを探せ！');
+                
+                // カメラを起動
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                videoElement.srcObject = stream;
+                videoElement.play();
+                requestAnimationFrame(tick);
+            } catch (err) {
+                console.error("カメラの起動に失敗しました: ", err);
+                showMessage("カメラが見つかりません。QRコードスキャンはできません。");
+            }
+        }
+        
+        // カメラ映像からQRコードを検出
+        function tick() {
+            if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+                const canvas = canvasElement.getContext('2d');
+                canvas.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+                const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+        
+                if (code) {
+                    const qrData = code.data.trim();
+                    if (foundQRs.hasOwnProperty(qrData)) {
+                        if (!foundQRs[qrData]) {
+                            // 未発見のQRコードだった場合
+                            foundQRs[qrData] = true;
+                            foundCount++;
+        
+                            // 読み込んだQRコードに応じてメッセージを表示
+                            if (qrData === 'qr1') {
+                                showMessage('ヒント①が解放されました');
+                            } else if (qrData === 'qr2') {
+                                showMessage('ヒント②が解放されました');
+                            } else if (qrData === 'qr3') {
+                                showMessage('ヒント③が解放されました');
+                            }
+        
+                            // QRコードに対応する画像に更新
+                            if (qrImages[qrData]) {
+                                puzzleImage.src = qrImages[qrData];
+                            }
+        
+                            if (foundCount === totalQRs) {
+                                // すべてのQRコードを発見したらQRスキャンを停止し、次の画面へ
+                                if (videoElement.srcObject) {
+                                    const tracks = videoElement.srcObject.getTracks();
+                                    tracks.forEach(track => track.stop());
+                                    videoElement.srcObject = null;
+                                    videoElement.style.display = 'none'; // ビデオ要素を非表示に
+                                }
+                                clearInterval(timerInterval); // タイマーを停止
+
+                                puzzleImage.src = './nazo3.jpeg'; // nazo3.jpegを表示
+                                finalMessageText.style.display = 'block'; // 最終メッセージを表示
+                                showMessage('すべてのQRコードを見つけました！おめでとう！');
+                            }
+                        }
+                    }
+                }
+            }
+            requestAnimationFrame(tick);
+        }
+    </script>
 </body>
 </html>
-
-
-
