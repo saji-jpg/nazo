@@ -339,8 +339,6 @@
         // メッセージボックスを非表示にするイベントリスナー
         okButton.addEventListener('click', () => {
             messageBoxOverlay.classList.remove('show');
-            // ゲーム開始時のみタイマーを起動
-            startTimer();
         });
         
         // 初期画面表示
@@ -397,6 +395,8 @@
                 videoElement.srcObject = stream;
                 videoElement.play();
                 requestAnimationFrame(tick);
+                // タイマーをゲーム開始時に一度だけ起動
+                startTimer();
             } catch (err) {
                 console.error("カメラの起動に失敗しました: ", err);
                 showMessage("カメラが見つかりません。QRコードスキャンはできません。");
