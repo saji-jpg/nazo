@@ -280,7 +280,7 @@
             <img id="puzzleImage" src="./nazo0.jpeg" alt="謎解き画像" style="max-width: 100%; height: auto; margin-bottom: 20px;">
             <div id="timer"></div> <!-- ここにタイマーを移動 -->
             <div id="finalMessageText" class="final-message-text" style="display:none;">
-                <p>答えを述べよ。</p>
+                <p>さあ答えを述べよ。</p>
             </div>
         </div>
     </div>
@@ -382,6 +382,27 @@
             }
             requestAnimationFrame(updateTimer);
         }
+
+        // QRコードの組み合わせに基づいて画像パスを決定する関数
+        function getPuzzleImage() {
+            if (foundQRs['qr1'] && foundQRs['qr2'] && foundQRs['qr3']) {
+                return './nazo1-2-3.jpeg';
+            } else if (foundQRs['qr1'] && foundQRs['qr2']) {
+                return './nazo1-2.jpeg';
+            } else if (foundQRs['qr1'] && foundQRs['qr3']) {
+                return './nazo1-3.jpeg';
+            } else if (foundQRs['qr2'] && foundQRs['qr3']) {
+                return './nazo2-3.jpeg';
+            } else if (foundQRs['qr1']) {
+                return './nazo1.jpeg';
+            } else if (foundQRs['qr2']) {
+                return './nazo2.jpeg';
+            } else if (foundQRs['qr3']) {
+                return './nazo3.jpeg';
+            } else {
+                return './nazo0.jpeg';
+            }
+        }
         
         // ゲーム開始
         async function startGame() {
@@ -413,40 +434,38 @@
         
                 if (code) {
                     const qrData = code.data.trim();
-                    if (foundQRs.hasOwnProperty(qrData)) {
-                        if (!foundQRs[qrData]) {
-                            // 未発見のQRコードだった場合
-                            foundQRs[qrData] = true;
-                            foundCount++;
+                    if (foundQRs.hasOwnProperty(qrData) && !foundQRs[qrData]) {
+                        // 未発見のQRコードだった場合
+                        foundQRs[qrData] = true;
+                        foundCount++;
         
-                            // 読み込んだQRコードに応じてメッセージを表示
-                            if (qrData === 'qr1') {
-                                showMessage('ヒント①が解放されました');
-                            } else if (qrData === 'qr2') {
-                                showMessage('ヒント②が解放されました');
-                            } else if (qrData === 'qr3') {
-                                showMessage('ヒント③が解放されました');
-                            }
+                        // 読み込んだQRコードに応じてメッセージを表示
+                        if (qrData === 'qr1') {
+                            showMessage('ヒント①が解放されました');
+                        } else if (qrData === 'qr2') {
+                            showMessage('ヒント②が解放されました');
+                        } else if (qrData === 'qr3') {
+                            showMessage('ヒント③が解放されました');
+                        }
         
-                            // QRコードに対応する画像に更新
-                            if (qrImages[qrData]) {
-                                puzzleImage.src = qrImages[qrData];
-                            }
+                        // QRコードの組み合わせに基づいて画像を更新
+                        puzzleImage.src = getPuzzleImage();
         
-                            if (foundCount === totalQRs) {
-                                // すべてのQRコードを発見したらQRスキャンを停止し、次の画面へ
-                                if (videoElement.srcObject) {
-                                    const tracks = videoElement.srcObject.getTracks();
-                                    tracks.forEach(track => track.stop());
-                                    videoElement.srcObject = null;
-                                    videoElement.style.display = 'none'; // ビデオ要素を非表示に
-                                }
-                                clearInterval(timerInterval); // タイマーを停止
-
-                                puzzleImage.src = './nazo3.jpeg'; // nazo3.jpegを表示
-                                finalMessageText.style.display = 'block'; // 最終メッセージを表示
-                                showMessage('すべてのQRコードを見つけました！おめでとう！');
+                        if (foundCount === totalQRs) {
+                            // すべてのQRコードを発見したらQRスキャンを停止し、次の画面へ
+                            if (videoElement.srcObject) {
+                                const tracks = videoElement.srcObject.getTracks();
+                                tracks.forEach(track => track.stop());
+                                videoElement.srcObject = null;
+                                videoElement.style.display = 'none'; // ビデオ要素を非表示に
                             }
+                            // タイマーを停止
+                            if (timerInterval) {
+                                clearInterval(timerInterval);
+                            }
+                            
+                            finalMessageText.style.display = 'block'; // 最終メッセージを表示
+                            showMessage('すべてのQRコードを見つけました！おめでとう！');
                         }
                     }
                 }
@@ -456,4 +475,3 @@
     </script>
 </body>
 </html>
-
