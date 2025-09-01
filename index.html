@@ -280,7 +280,7 @@
             <img id="puzzleImage" src="./nazo0.jpeg" alt="謎解き画像" style="max-width: 100%; height: auto; margin-bottom: 20px;">
             <div id="timer"></div> <!-- ここにタイマーを移動 -->
             <div id="finalMessageText" class="final-message-text" style="display:none;">
-                <p>答えを述べよ。</p>
+                <p>さあ答えを述べよ。</p>
             </div>
         </div>
     </div>
@@ -329,6 +329,8 @@
         const totalTimeInSeconds = 3 * 60;
         let timeLeft = totalTimeInSeconds;
         let startTime; // 新しい変数: タイマー開始時刻
+        
+        let timerStarted = false; // タイマーが開始されたかどうかを追跡する新しい変数
 
         // メッセージボックスを表示する関数
         function showMessage(text) {
@@ -339,6 +341,16 @@
         // メッセージボックスを非表示にするイベントリスナー
         okButton.addEventListener('click', () => {
             messageBoxOverlay.classList.remove('show');
+            // すべてのQRコードを発見した場合のみ、QRスキャンを停止
+            if (foundCount === totalQRs) {
+                if (videoElement.srcObject) {
+                    const tracks = videoElement.srcObject.getTracks();
+                    tracks.forEach(track => track.stop());
+                    videoElement.srcObject = null;
+                    videoElement.style.display = 'none';
+                    document.getElementById('camera-container').style.display = 'none';
+                }
+            }
         });
         
         // 初期画面表示
@@ -354,6 +366,8 @@
 
         // タイマーを開始する関数
         function startTimer() {
+            if (timerStarted) return; // すでにタイマーが開始されている場合は何もしない
+            timerStarted = true;
             timerElement.style.display = 'block';
             startTime = Date.now(); // タイマー開始時刻を記録
             
@@ -458,6 +472,7 @@
                                 tracks.forEach(track => track.stop());
                                 videoElement.srcObject = null;
                                 videoElement.style.display = 'none'; // ビデオ要素を非表示に
+                                document.getElementById('camera-container').style.display = 'none';
                             }
                             // タイマーを停止
                             if (timerInterval) {
@@ -475,4 +490,3 @@
     </script>
 </body>
 </html>
-
