@@ -429,7 +429,7 @@
             showScreen('gameScreen');
             try {
                 // ゲーム開始時にメッセージを表示
-                showMessage('3分以内に3つのQRコードを探せ！');
+                showMessage('5分以内に3つのQRコードを探せ！');
                 
                 // カメラを起動
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
@@ -496,4 +496,5 @@
     </script>
 </body>
 </html>
+
 
